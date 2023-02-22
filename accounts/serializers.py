@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
+
 
 
 def clean_email(value):
@@ -7,11 +10,16 @@ def clean_email(value):
     return value
 
 
-class UserRegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(required = True)
-    email = serializers.EmailField(required = True,validators = [clean_email])
-    password1 = serializers.CharField(required = True,write_only = True)
-    password2 = serializers.CharField(required = True,write_only = True)
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(required = True,write_only=True)
+    class Meta:
+        model = User
+        fields = ['username','email','password','password1']
+        extra_kwargs = {
+            'password':{'write_only':True},
+            'email':(clean_email,),
+
+        }
 
 
     def validate_username(self,value):
