@@ -41,9 +41,6 @@ class QuestionView(APIView):
 
     def delete(self,request,pk):
         question = Question.objects.get(pk = pk)
-        srz_data = QoestionSerializer(instance=question,data=request.data,partial = True)
-        if srz_data.is_valid():
-            srz_data.delete()
-            return Response(srz_data.data,status=status.HTTP_200_OK)
-        return Response(srz_data.errors,status=status.HTTP_400_BAD_REQUEST)
+        question.delete()
+        return Response({'message':'questions delete'},status=status.HTTP_200_OK)
  
