@@ -1,17 +1,21 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 from . models import Person,Question,Answer
 from . serializers import PersonSerializer,QoestionSerializer,AnswerSerializer
 
+from permissions import IsOwnerOrReadOnly
+
+
+
 class Home(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     def get(self,request):
         person = Person.objects.all()
         ser_data = PersonSerializer(instance=person,many = True).data
-        return Response(ser_data,status= status.HTTP_200_OK)
+        return Response(ser_data)
 
 
 class QuestionListView(APIView):
@@ -23,6 +27,7 @@ class QuestionListView(APIView):
 
 
 class QuestionCreateView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         srz_data = QoestionSerializer(data=request.POST) 
@@ -33,9 +38,11 @@ class QuestionCreateView(APIView):
 
 
 class QuestionUpdateView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
 
     def put(self,request,pk):
         question = Question.objects.get(pk = pk)
+        self.check_object_permissions(request,question)
         srz_data = QoestionSerializer(instance=question,data=request.data,partial = True)
         if srz_data.is_valid():
             srz_data.save()
@@ -44,6 +51,7 @@ class QuestionUpdateView(APIView):
 
 
 class QuestionDeleteView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
 
     def delete(self,request,pk):
         question = Question.objects.get(pk = pk)
