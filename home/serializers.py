@@ -12,6 +12,7 @@ class PersonSerializer(serializers.Serializer):
 
 class QoestionSerializer(serializers.ModelSerializer):
     answers = serializers.SerializerMethodField()    
+    
     class Meta:
         model = Question
         fields = '__all__'
