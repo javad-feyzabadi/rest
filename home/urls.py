@@ -6,4 +6,6 @@ app_name = "home"
 
 urlpatterns =[
     path('',views.Home.as_view(),name = 'home'), #endpoint
+    path('questions/',views.QuestionView.as_view(),name = 'questions'),
+
 ]
