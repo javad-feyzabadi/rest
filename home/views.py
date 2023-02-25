@@ -20,7 +20,12 @@ class Home(APIView):
 
 
 class QuestionListView(APIView):
+    """
+        List All Question
+    """
     throttle_classes=[UserRateThrottle,AnonRateThrottle] 
+    serializer_class = QoestionSerializer
+
 
     def get(self,request):
         questions =Question.objects.all()
@@ -29,7 +34,11 @@ class QuestionListView(APIView):
 
 
 class QuestionCreateView(APIView):
+    """
+        Create A New Question
+    """
     permission_classes = [IsAuthenticated]
+    serializer_class = QoestionSerializer
 
     def post(self,request):
         srz_data = QoestionSerializer(data=request.POST) 
@@ -40,7 +49,12 @@ class QuestionCreateView(APIView):
 
 
 class QuestionUpdateView(APIView):
+    """
+        Update A Question
+    """
     permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = QoestionSerializer
+
 
     def put(self,request,pk):
         question = Question.objects.get(pk = pk)
@@ -53,7 +67,12 @@ class QuestionUpdateView(APIView):
 
 
 class QuestionDeleteView(APIView):
+    """
+        Delete A Question
+    """
     permission_classes = [IsOwnerOrReadOnly] 
+    serializer_class = QoestionSerializer
+
 
     def delete(self,request,pk):
         question = Question.objects.get(pk = pk)

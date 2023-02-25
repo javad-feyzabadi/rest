@@ -7,4 +7,6 @@ djangorestframework-simplejwt==5.2.2
 pycparser==2.21
 PyJWT==2.6.0
 pytz==2022.7.1
+PyYAML==6.0
 sqlparse==0.4.3
+uritemplate==4.1.1
