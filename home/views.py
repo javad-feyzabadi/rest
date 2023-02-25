@@ -12,7 +12,7 @@ from permissions import IsOwnerOrReadOnly
 
 
 class Home(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
         person = Person.objects.all()
         ser_data = PersonSerializer(instance=person,many = True).data
