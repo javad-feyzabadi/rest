@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 
 from . models import Person,Question,Answer
 from . serializers import PersonSerializer,QoestionSerializer,AnswerSerializer
@@ -19,6 +20,7 @@ class Home(APIView):
 
 
 class QuestionListView(APIView):
+    throttle_classes=[UserRateThrottle,AnonRateThrottle] 
 
     def get(self,request):
         questions =Question.objects.all()
@@ -51,7 +53,7 @@ class QuestionUpdateView(APIView):
 
 
 class QuestionDeleteView(APIView):
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly] 
 
     def delete(self,request,pk):
         question = Question.objects.get(pk = pk)
